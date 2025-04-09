@@ -1,0 +1,100 @@
+# OBSEDIANSS<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OBSEDIAN Access</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; background-color: #f0f0f0; }
+    .form-container { max-width: 450px; margin: auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    input { width: 100%; padding: 10px; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 6px; }
+    button { width: 100%; padding: 10px; background-color: #333; color: white; border: none; border-radius: 6px; cursor: pointer; }
+    .hidden { display: none; }
+    h2 { text-align: center; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <div id="password-section">
+      <h2>Enter OBSEDIAN Password</h2>
+      <input type="password" id="password" placeholder="Enter Password">
+      <button onclick="checkPassword()">Continue</button>
+      <p id="password-error" style="color: red; text-align: center;"></p>
+    </div>
+
+    <div id="form-section" class="hidden">
+      <h2>OBSEDIAN Form</h2>
+      <form id="userForm">
+        <input type="hidden" name="enteredPassword" id="enteredPassword">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="tel" name="phone" placeholder="Phone Number" required>
+        <input type="text" name="address" placeholder="Address" required>
+        <input type="email" name="email" placeholder="Gmail ID" required>
+        <input type="text" name="usedPassword" placeholder="Re-enter Password" required>
+        <button type="submit">Submit</button>
+      </form>
+      <p id="form-message" style="text-align: center;"></p>
+    </div>
+  </div>
+
+  <script>
+    const validPasswords = [
+      "OB12SE", "OB34DI", "SE12OB", "DI45AN", "OB78AN",
+      "OBSED1", "SE1234", "OB5678", "OB91AN", "DI23OB",
+      "OBSE23", "AN12OB", "OBSE45", "DI67OB", "SE78OB",
+      "OBSE12", "OBSE89", "OBSE56", "OB78SE", "OBSE90",
+      "OB23DI", "OB45AN", "DI34OB", "OBDI12", "OBSE67",
+      "OBSE43", "OBDI89", "OBAN34", "SEOB12", "OBSE76",
+      "OB21DI", "OB43AN", "OBSE98", "OBSE65", "OBDI43",
+      "OBDI22", "OBSE33", "OBSE29", "OBSE48", "OBDI88",
+      "OB12AN", "OBSE26", "OBDI39", "OBSE31", "OBDI77",
+      "OB23AN", "OBSE08", "OBSE14", "OBSE21", "OBSE87",
+      "OBAN76", "OBDI00", "OBSE44", "OBSE66", "OBSE55",
+      "OB34AN", "OBSE77", "OBSE32", "OBSE97", "OBSE13",
+      "OBSE22", "OBSE19", "OBSE91", "OBSE11", "OBSE18",
+      "OBDI14", "OBAN33", "OBSE35", "OBSE38", "OBSE41",
+      "OBSE25", "OBSE36", "OBSE85", "OBDI10", "OBDI15",
+      "OBSE07", "OBSE02", "OBSE50", "OBDI63", "OBAN90",
+      "OBDI70", "OBSE04", "OBSE05", "OBSE06", "OBSE03",
+      "OBSE30", "OBSE40", "OBSE60", "OBSE80", "OBSE95",
+      "OBDI30", "OBSE49", "OBSE68", "OBSE93", "OBSE94",
+      "OBSE99", "OBDI66", "OBDI69", "OBSE59", "OBSE88"
+    ];
+
+    let userPassword = "";
+
+    function checkPassword() {
+      const input = document.getElementById("password").value;
+      const error = document.getElementById("password-error");
+      if (validPasswords.includes(input)) {
+        userPassword = input;
+        document.getElementById("enteredPassword").value = input;
+        document.getElementById("password-section").classList.add("hidden");
+        document.getElementById("form-section").classList.remove("hidden");
+      } else {
+        error.textContent = "❌ Incorrect password. Try again.";
+      }
+    }
+
+    document.getElementById("userForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData);
+
+      fetch("https://sheetdb.io/api/v1/w5bee4lad1cyz", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data })
+      })
+      .then(response => response.json())
+      .then(result => {
+        document.getElementById("form-message").textContent = "✅ Submitted successfully!";
+        this.reset();
+      })
+      .catch(error => {
+        document.getElementById("form-message").textContent = "❌ Error submitting. Try again.";
+      });
+    });
+  </script>
+</body>
+</html>
